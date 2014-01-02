@@ -11,7 +11,7 @@ Game = {
       _nextStageLoaded: false,
 
       init: function(){
-        this.requires('2D, Canvas');
+        this.requires('2D, Canvas, Collision');
 
         this.attr({
           x: 0,
@@ -26,12 +26,15 @@ Game = {
             this._nextStageLoaded = true;
             Crafty.trigger('LoadNewStage');
           }
+        })
+        .onHit('Jump', function(e){
+          if(e[0].obj._y > 455) Crafty.stop();
         });
       }
     });
 
     Crafty.bind('LoadNewStage', function(){
-      Crafty.e('Stage, Color')
+      Crafty.e('Stage, Collision, Color')
       .attr({
         x: 800 + genRandomInt(500, 100)
       })
@@ -77,7 +80,7 @@ Game = {
       })
       .jump(10)
       .gravity(3)
-      .gravity('2D')
+      .gravity('Stage')
       .color('blue');
   }
 }
