@@ -2,15 +2,23 @@ function genRandomInt(max, min){
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+function timeElapsed(start){
+  if(start) this.time = (Date.now() - start) / 1000;
+  return this.time;
+}
+
 window.addEventListener('load', function(){
 
 Crafty.init(800, 600);
 Crafty.background('black');
-Crafty.e('2D, Canvas, Mouse, Text')
+Crafty.e('2D, Canvas, Mouse, Text, Keyboard')
   .text('Start')
   .textColor('#ffffff')
   .bind('Click', function(){
     Crafty.scene('Game');
+  })
+  .bind('KeyDown', function(){
+    Crafty.scene('Game')
   });
 
 Crafty.c('Stage', {
@@ -72,6 +80,9 @@ Crafty.bind('LoadNewStage', function(){
 });
 
 Crafty.scene('Game', function(){
+  startDate = Date.now();
+  varTimeElapsed = 0;
+
   Crafty.e('Stage, Color')
     .attr({
       w: 1000
@@ -89,15 +100,24 @@ Crafty.scene('Game', function(){
     .gravity(3)
     .gravity('Stage')
     .color('blue');
+
+    var Timer = Crafty.e('2D, Canvas, Text')
+      .textColor('#ffffff')
+      .bind('EnterFrame', function(){
+        this.text(timeElapsed(startDate));
+      })
 });
 
 Crafty.scene('End', function(){
-  Crafty.e('2D, Canvas, Mouse, Text')
-  .text('Try Again')
-  .textColor('#ffffff')
-  .bind('Click', function(){
-    Crafty.scene('Game');
-  });
+  Crafty.e('2D, Canvas, Mouse, Text, Keyboard')
+    .text(timeElapsed())
+    .textColor('#ffffff')
+    .bind('Click', function(){
+      Crafty.scene('Game');
+    })
+    .bind('KeyDown', function(){
+      Crafty.scene('Game')
+    });
 });
 
 });
