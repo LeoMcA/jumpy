@@ -42,6 +42,7 @@ Crafty.c('Stage', {
       }
     })
     .onHit('Jump', function(e){
+      e[0].obj.disableControls = false;
       if(e[0].obj.y > 455) Crafty.scene('End');
     });
   }
