@@ -42,7 +42,7 @@ Crafty.c('Stage', {
       }
     })
     .onHit('Jump', function(e){
-      if(e[0].obj._y > 455) Crafty.scene('End');
+      if(e[0].obj.y > 455) Crafty.scene('End');
     });
   }
 });
@@ -57,13 +57,13 @@ Crafty.c('Jump', {
   jump: function(speed){
     this._jumpSpeed = speed;
 
-    this.bind("EnterFrame", function(){
+    this.bind('EnterFrame', function(){
       if(this.disableControls) return;
       if(this._up){
         this.y -= this._jumpSpeed;
         this._falling = true;
       }
-    }).bind("KeyDown", function(){
+    }).bind('KeyDown', function(){
       this._up = true;
     });
 
@@ -99,7 +99,10 @@ Crafty.scene('Game', function(){
     .jump(10)
     .gravity(3)
     .gravity('Stage')
-    .color('blue');
+    .color('blue')
+    .bind('EnterFrame', function(){
+      if(this.y > 450) this.disableControls = true;
+    });
 
     var Timer = Crafty.e('2D, Canvas, Text')
       .textColor('#ffffff')
