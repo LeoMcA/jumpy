@@ -103,6 +103,7 @@ Crafty.scene('Game', function(){
     .color('blue')
     .bind('EnterFrame', function(){
       if(this.y > 450) this.disableControls = true;
+      if(this.y > 600) Crafty.scene('End');
     });
 
     var Timer = Crafty.e('2D, Canvas, Text')
