@@ -114,8 +114,13 @@ Crafty.scene('Game', function(){
 });
 
 Crafty.scene('End', function(){
+
+  if(timeElapsed() > localStorage.getItem('hiscore')){
+    localStorage.setItem('hiscore', timeElapsed());
+  }
+
   Crafty.e('2D, Canvas, Mouse, Text, Keyboard')
-    .text(timeElapsed())
+    .text(timeElapsed() + ' Hiscore: ' + localStorage.getItem('hiscore'))
     .textColor('#ffffff')
     .bind('Click', function(){
       Crafty.scene('Game');
