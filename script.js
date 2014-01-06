@@ -27,6 +27,7 @@ function calcLevel(time){
 window.addEventListener('load', function(){
   Crafty.init();
   Crafty.background('black');
+  Crafty.timer.FPS('60');
   Crafty.e('2D, Canvas, Text, Keyboard')
     .text('Start')
     .textColor('#ffffff')
