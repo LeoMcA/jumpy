@@ -1,3 +1,9 @@
+/*---------------------------------------------*\
+
+  Helpful Functions
+
+\*---------------------------------------------*/
+
 function genRandomInt(max, min){
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -7,78 +13,31 @@ function timeElapsed(start){
   return this.time;
 }
 
+/*---------------------------------------------*\
+
+  Initalise Game
+
+\*---------------------------------------------*/
+
 window.addEventListener('load', function(){
-
-Crafty.init(800, 600);
-Crafty.background('black');
-Crafty.e('2D, Canvas, Mouse, Text, Keyboard')
-  .text('Start')
-  .textColor('#ffffff')
-  .bind('Click', function(){
-    Crafty.scene('Game');
-  })
-  .bind('KeyDown', function(){
-    Crafty.scene('Game')
-  });
-
-Crafty.c('Stage', {
-  _nextStageLoaded: false,
-
-  init: function(){
-    this.requires('2D, Canvas, Collision');
-
-    this.attr({
-      x: 0,
-      y: 500,
-      w: genRandomInt(1000, 500),
-      h: 100
+  Crafty.init(800, 600);
+  Crafty.background('black');
+  Crafty.e('2D, Canvas, Mouse, Text, Keyboard')
+    .text('Start')
+    .textColor('#ffffff')
+    .bind('Click', function(){
+      Crafty.scene('Game');
     })
-    .bind('EnterFrame', function(){
-      this.x -= 20;
-
-      if(this.x + this.w <= 800 && !this._nextStageLoaded){
-        this._nextStageLoaded = true;
-        Crafty.trigger('LoadNewStage');
-      }
-    })
-    .onHit('Jump', function(e){
-      e[0].obj.disableControls = false;
-      if(e[0].obj.y > 455) Crafty.scene('End');
+    .bind('KeyDown', function(){
+      Crafty.scene('Game')
     });
-  }
 });
 
-Crafty.c('Jump', {
-  _up: false,
+/*---------------------------------------------*\
 
-  init: function(){
-    this.requires('Keyboard');
-  },
+  Scenes
 
-  jump: function(speed){
-    this._jumpSpeed = speed;
-
-    this.bind('EnterFrame', function(){
-      if(this.disableControls) return;
-      if(this._up){
-        this.y -= this._jumpSpeed;
-        this._falling = true;
-      }
-    }).bind('KeyDown', function(){
-      this._up = true;
-    });
-
-    return this;
-  }
-});
-
-Crafty.bind('LoadNewStage', function(){
-  Crafty.e('Stage, Collision, Color')
-  .attr({
-    x: 800 + genRandomInt(500, 100)
-  })
-  .color('red');
-});
+\*---------------------------------------------*/
 
 Crafty.scene('Game', function(){
   startDate = Date.now();
@@ -130,4 +89,73 @@ Crafty.scene('End', function(){
     });
 });
 
+/*---------------------------------------------*\
+
+  Binds
+
+\*---------------------------------------------*/
+
+Crafty.bind('LoadNewStage', function(){
+  Crafty.e('Stage, Collision, Color')
+  .attr({
+    x: 800 + genRandomInt(500, 100)
+  })
+  .color('red');
+});
+
+/*---------------------------------------------*\
+
+  Custom Components
+
+\*---------------------------------------------*/
+
+Crafty.c('Stage', {
+  _nextStageLoaded: false,
+
+  init: function(){
+    this.requires('2D, Canvas, Collision');
+
+    this.attr({
+      x: 0,
+      y: 500,
+      w: genRandomInt(1000, 500),
+      h: 100
+    })
+    .bind('EnterFrame', function(){
+      this.x -= 20;
+
+      if(this.x + this.w <= 800 && !this._nextStageLoaded){
+        this._nextStageLoaded = true;
+        Crafty.trigger('LoadNewStage');
+      }
+    })
+    .onHit('Jump', function(e){
+      e[0].obj.disableControls = false;
+      if(e[0].obj.y > 455) Crafty.scene('End');
+    });
+  }
+});
+
+Crafty.c('Jump', {
+  _up: false,
+
+  init: function(){
+    this.requires('Keyboard');
+  },
+
+  jump: function(speed){
+    this._jumpSpeed = speed;
+
+    this.bind('EnterFrame', function(){
+      if(this.disableControls) return;
+      if(this._up){
+        this.y -= this._jumpSpeed;
+        this._falling = true;
+      }
+    }).bind('KeyDown', function(){
+      this._up = true;
+    });
+
+    return this;
+  }
 });
