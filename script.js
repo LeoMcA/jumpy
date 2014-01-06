@@ -27,17 +27,17 @@ function calcLevel(time){
 window.addEventListener('load', function(){
   Crafty.init(800, 600);
   Crafty.background('black');
-  Crafty.e('2D, Canvas, Mouse, Text, Keyboard')
+  Crafty.e('2D, Canvas, Text, Keyboard')
     .text('Start')
     .textColor('#ffffff')
-    .bind('Click', function(){
-      Crafty.scene('Game');
-    })
     .bind('KeyDown', function(){
       Crafty.scene('Game');
     });
-});
 
+  Crafty.stage.elem.addEventListener('mousedown', function(){
+    Crafty.trigger('KeyDown');
+  });
+});
 /*---------------------------------------------*\
 
   Scenes
@@ -83,12 +83,9 @@ Crafty.scene('End', function(){
     localStorage.setItem('hiscore', timeElapsed());
   }
 
-  Crafty.e('2D, Canvas, Mouse, Text, Keyboard')
+  Crafty.e('2D, Canvas, Text, Keyboard')
     .text(timeElapsed() + ' Hiscore: ' + localStorage.getItem('hiscore'))
     .textColor('#ffffff')
-    .bind('Click', function(){
-      Crafty.scene('Game');
-    })
     .bind('KeyDown', function(){
       Crafty.scene('Game')
     });
@@ -149,9 +146,10 @@ Crafty.c('Jump', {
         this.y -= this._jumpSpeed;
         this._falling = true;
       }
-    }).bind('KeyDown', function(){
+    })
+    .bind('KeyDown', function(){
       this._up = true;
-    });
+    })
 
     return this;
   }
