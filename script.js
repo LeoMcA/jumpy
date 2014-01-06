@@ -5,7 +5,7 @@
 \*---------------------------------------------*/
 
 function genRandomInt(max, min){
-  return Math.floor(Math.random() * (max - min + 1) + min)
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 function timeElapsed(start){
@@ -29,7 +29,7 @@ window.addEventListener('load', function(){
       Crafty.scene('Game');
     })
     .bind('KeyDown', function(){
-      Crafty.scene('Game')
+      Crafty.scene('Game');
     });
 });
 
@@ -69,7 +69,7 @@ Crafty.scene('Game', function(){
       .textColor('#ffffff')
       .bind('EnterFrame', function(){
         this.text(timeElapsed(startDate));
-      })
+      });
 });
 
 Crafty.scene('End', function(){
