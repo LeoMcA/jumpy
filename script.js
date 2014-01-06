@@ -37,6 +37,10 @@ window.addEventListener('load', function(){
   Crafty.stage.elem.addEventListener('mousedown', function(){
     Crafty.trigger('KeyDown');
   });
+
+  window.addEventListener('blur', function(){
+    if(timeElapsed()) Crafty.scene('End');
+  })
 });
 /*---------------------------------------------*\
 
