@@ -13,6 +13,11 @@ function timeElapsed(start){
   return this.time;
 }
 
+function calcLevel(time){
+  if(!time) return 0;
+  return Math.floor(time/10);
+}
+
 /*---------------------------------------------*\
 
   Initalise Game
@@ -108,7 +113,7 @@ Crafty.c('Stage', {
       h: 100
     })
     .bind('EnterFrame', function(){
-      this.x -= 20;
+      this.x -= 20 + 5 * calcLevel(timeElapsed());
 
       if(this.x + this.w <= 800 && !this._nextStageLoaded){
         this._nextStageLoaded = true;
