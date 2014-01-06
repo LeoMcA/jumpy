@@ -25,7 +25,7 @@ function calcLevel(time){
 \*---------------------------------------------*/
 
 window.addEventListener('load', function(){
-  Crafty.init(800, 600);
+  Crafty.init();
   Crafty.background('black');
   Crafty.e('2D, Canvas, Text, Keyboard')
     .text('Start')
@@ -40,8 +40,9 @@ window.addEventListener('load', function(){
 
   window.addEventListener('blur', function(){
     if(timeElapsed()) Crafty.scene('End');
-  })
+  });
 });
+
 /*---------------------------------------------*\
 
   Scenes
@@ -54,14 +55,14 @@ Crafty.scene('Game', function(){
 
   Crafty.e('Stage, Color')
     .attr({
-      w: 1000
+      w: Crafty.stage.elem.clientWidth
     })
     .color('red');
 
   Crafty.e('2D, Canvas, Jump, Gravity, Color')
     .attr({
       x: 50,
-      y: 450,
+      y: Crafty.stage.elem.clientHeight - 150,
       w: 50,
       h: 50
     })
@@ -70,8 +71,8 @@ Crafty.scene('Game', function(){
     .gravity('Stage')
     .color('blue')
     .bind('EnterFrame', function(){
-      if(this.y > 450) this.disableControls = true;
-      if(this.y > 600) Crafty.scene('End');
+      if(this.y > Crafty.stage.elem.clientHeight - 150) this.disableControls = true;
+      if(this.y > Crafty.stage.elem.clientHeight) Crafty.scene('End');
     });
 
     var Timer = Crafty.e('2D, Canvas, Text')
@@ -109,19 +110,19 @@ Crafty.c('Stage', {
 
     this.attr({
       x: 0,
-      y: 500,
+      y: Crafty.stage.elem.clientHeight - 100,
       w: genRandomInt(1000, 500),
       h: 100
     })
     .bind('EnterFrame', function(){
       this.x -= 20 + 5 * calcLevel(timeElapsed());
 
-      if(this.x + this.w <= 800 && !this._nextStageLoaded){
+      if(this.x + this.w <= Crafty.stage.elem.clientWidth && !this._nextStageLoaded){
         this._nextStageLoaded = true;
 
         Crafty.e('Stage, Collision, Color')
           .attr({
-            x: 800 + genRandomInt(500, 100)
+            x: Crafty.stage.elem.clientWidth  + genRandomInt(500, 100)
           })
           .color('red');
 
@@ -129,7 +130,7 @@ Crafty.c('Stage', {
     })
     .onHit('Jump', function(e){
       e[0].obj.disableControls = false;
-      if(e[0].obj.y > 455) Crafty.scene('End');
+      if(e[0].obj.y > Crafty.stage.elem.clientHeight - 145) Crafty.scene('End');
     });
   }
 });
