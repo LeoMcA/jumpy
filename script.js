@@ -91,20 +91,6 @@ Crafty.scene('End', function(){
 
 /*---------------------------------------------*\
 
-  Binds
-
-\*---------------------------------------------*/
-
-Crafty.bind('LoadNewStage', function(){
-  Crafty.e('Stage, Collision, Color')
-  .attr({
-    x: 800 + genRandomInt(500, 100)
-  })
-  .color('red');
-});
-
-/*---------------------------------------------*\
-
   Custom Components
 
 \*---------------------------------------------*/
@@ -126,7 +112,13 @@ Crafty.c('Stage', {
 
       if(this.x + this.w <= 800 && !this._nextStageLoaded){
         this._nextStageLoaded = true;
-        Crafty.trigger('LoadNewStage');
+
+        Crafty.e('Stage, Collision, Color')
+          .attr({
+            x: 800 + genRandomInt(500, 100)
+          })
+          .color('red');
+
       }
     })
     .onHit('Jump', function(e){
