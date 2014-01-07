@@ -32,7 +32,8 @@ window.addEventListener('load', function(){
     .text('Start')
     .textColor('#ffffff')
     .bind('KeyDown', function(){
-      Crafty.scene('Game');
+      if(this.isDown('F')) Crafty.trigger('goFullscreen');
+      else Crafty.scene('Game');
     });
 
   Crafty.stage.elem.addEventListener('mousedown', function(){
@@ -42,6 +43,24 @@ window.addEventListener('load', function(){
   window.addEventListener('blur', function(){
     if(timeElapsed()) Crafty.scene('End');
   });
+});
+
+/*---------------------------------------------*\
+
+  Binds
+
+\*---------------------------------------------*/
+
+Crafty.bind('goFullscreen', function(){
+  if (Crafty.stage.elem.requestFullscreen) {
+    Crafty.stage.elem.requestFullscreen();
+  } else if (Crafty.stage.elem.msRequestFullscreen) {
+    Crafty.stage.elem.msRequestFullscreen();
+  } else if (Crafty.stage.elem.mozRequestFullScreen) {
+    Crafty.stage.elem.mozRequestFullScreen();
+  } else if (Crafty.stage.elem.webkitRequestFullscreen) {
+    Crafty.stage.elem.webkitRequestFullscreen();
+  }
 });
 
 /*---------------------------------------------*\
