@@ -126,7 +126,7 @@ Crafty.c('Stage', {
   _nextStageLoaded: false,
 
   init: function(){
-    this.requires('2D, Canvas, Collision');
+    this.requires('2D, Canvas');
 
     this.attr({
       x: 0,
@@ -147,10 +147,6 @@ Crafty.c('Stage', {
           .color('red');
 
       }
-    })
-    .onHit('Jump', function(e){
-      e[0].obj.disableControls = false;
-      if(e[0].obj.y > Crafty.stage.elem.clientHeight - 145) Crafty.scene('End');
     });
   }
 });
@@ -159,7 +155,7 @@ Crafty.c('Jump', {
   _up: false,
 
   init: function(){
-    this.requires('Keyboard');
+    this.requires('Keyboard, Collision');
   },
 
   jump: function(speed){
@@ -174,6 +170,13 @@ Crafty.c('Jump', {
     })
     .bind('KeyDown', function(){
       this._up = true;
+    }).onHit('Stage', function(){
+      this.disableControls = false;
+      // '~~' converts from floating point to integer, to fix issue #11
+      // https://github.com/LeoMcA/jumpy/issues/11
+      if(~~this.y > Crafty.stage.elem.clientHeight - 145){
+        Crafty.scene('End');
+      }
     })
 
     return this;
