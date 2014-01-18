@@ -143,6 +143,10 @@ Crafty.c('Stage', {
           .color('red');
 
       }
+
+      if(this.x + this.w <= 0){
+        this.destroy();
+      }
     });
   }
 });
