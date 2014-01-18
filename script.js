@@ -39,6 +39,9 @@ window.addEventListener('load', function(){
   window.addEventListener('blur', function(){
     if(timeElapsed()) Crafty.scene('End');
   });
+
+  height = Crafty.stage.elem.clientHeight;
+  width = Crafty.stage.elem.clientWidth;
 });
 
 /*---------------------------------------------*\
@@ -71,14 +74,14 @@ Crafty.scene('Game', function(){
 
   Crafty.e('Stage, Color')
     .attr({
-      w: Crafty.stage.elem.clientWidth
+      w: width
     })
     .color('red');
 
   Crafty.e('2D, Canvas, Jump, Gravity, Color')
     .attr({
       x: 50,
-      y: Crafty.stage.elem.clientHeight - 150,
+      y: height - 150,
       w: 50,
       h: 50
     })
@@ -87,15 +90,15 @@ Crafty.scene('Game', function(){
     .gravity('Stage')
     .color('blue')
     .bind('EnterFrame', function(){
-      if(this.y > Crafty.stage.elem.clientHeight - 150) this.disableControls = true;
-      if(this.y > Crafty.stage.elem.clientHeight) Crafty.scene('End');
+      if(this.y > height - 150) this.disableControls = true;
+      if(this.y > height) Crafty.scene('End');
     });
 
-    var Timer = Crafty.e('2D, Canvas, Text')
-      .textColor('#ffffff')
-      .bind('EnterFrame', function(){
-        this.text(timeElapsed(startDate));
-      });
+  Crafty.e('2D, Canvas, Text')
+    .textColor('#ffffff')
+    .bind('RenderScene', function(){
+      this.text(timeElapsed(startDate));
+    });
 });
 
 Crafty.scene('End', function(){
@@ -126,19 +129,19 @@ Crafty.c('Stage', {
 
     this.attr({
       x: 0,
-      y: Crafty.stage.elem.clientHeight - 100,
+      y: height - 100,
       w: Crafty.math.randomInt(1000, 500),
       h: 100
     })
     .bind('EnterFrame', function(){
       this.x -= 20 + 5 * calcLevel(timeElapsed());
 
-      if(this.x + this.w <= Crafty.stage.elem.clientWidth && !this._nextStageLoaded){
+      if(this.x + this.w <= width && !this._nextStageLoaded){
         this._nextStageLoaded = true;
 
         Crafty.e('Stage, Collision, Color')
           .attr({
-            x: Crafty.stage.elem.clientWidth  + Crafty.math.randomInt(500, 100)
+            x: width  + Crafty.math.randomInt(500, 100)
           })
           .color('red');
 
@@ -174,7 +177,7 @@ Crafty.c('Jump', {
       this.disableControls = false;
       // '~~' converts from floating point to integer, to fix issue #11
       // https://github.com/LeoMcA/jumpy/issues/11
-      if(~~this.y > Crafty.stage.elem.clientHeight - 145){
+      if(~~this.y > height - 145){
         Crafty.scene('End');
       }
     })
