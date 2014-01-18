@@ -4,10 +4,6 @@
 
 \*---------------------------------------------*/
 
-function genRandomInt(max, min){
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 function timeElapsed(start){
   if(start) this.time = (Date.now() - start) / 1000;
   return this.time;
@@ -131,7 +127,7 @@ Crafty.c('Stage', {
     this.attr({
       x: 0,
       y: Crafty.stage.elem.clientHeight - 100,
-      w: genRandomInt(1000, 500),
+      w: Crafty.math.randomInt(1000, 500),
       h: 100
     })
     .bind('EnterFrame', function(){
@@ -142,7 +138,7 @@ Crafty.c('Stage', {
 
         Crafty.e('Stage, Collision, Color')
           .attr({
-            x: Crafty.stage.elem.clientWidth  + genRandomInt(500, 100)
+            x: Crafty.stage.elem.clientWidth  + Crafty.math.randomInt(500, 100)
           })
           .color('red');
 
