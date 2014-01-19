@@ -42,6 +42,23 @@ window.addEventListener('load', function(){
 
   height = Crafty.stage.elem.clientHeight;
   width = Crafty.stage.elem.clientWidth;
+
+  if (Crafty.stage.elem.msRequestFullscreen) {
+    fullscreenPrefix = 'ms';
+  } else if (Crafty.stage.elem.mozRequestFullScreen) {
+    fullscreenPrefix = 'moz';
+  } else if (Crafty.stage.elem.webkitRequestFullscreen) {
+    fullscreenPrefix = 'webkit';
+  } else {
+    fullscreenPrefix = '';
+  }
+
+  window.addEventListener(fullscreenPrefix+'fullscreenchange', function(){
+    window.setTimeout(function(){
+      height = Crafty.stage.elem.clientHeight;
+      width = Crafty.stage.elem.clientWidth;
+    }, 100);
+  });
 });
 
 /*---------------------------------------------*\
