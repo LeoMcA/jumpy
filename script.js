@@ -21,7 +21,7 @@ function calcLevel(time){
 \*---------------------------------------------*/
 
 window.addEventListener('load', function(){
-  Crafty.init();
+  Crafty.init(900, 400);
   Crafty.background('black');
   Crafty.timer.FPS('60');
   Crafty.e('2D, Canvas, Text, Keyboard')
@@ -32,32 +32,12 @@ window.addEventListener('load', function(){
       else Crafty.scene('Game');
     });
 
-  Crafty.stage.elem.addEventListener('mousedown', function(){
+  window.addEventListener('mousedown', function(){
     Crafty.trigger('KeyDown');
   });
 
   window.addEventListener('blur', function(){
     if(timeElapsed()) Crafty.scene('End');
-  });
-
-  height = Crafty.stage.elem.clientHeight;
-  width = Crafty.stage.elem.clientWidth;
-
-  if (Crafty.stage.elem.msRequestFullscreen) {
-    fullscreenPrefix = 'ms';
-  } else if (Crafty.stage.elem.mozRequestFullScreen) {
-    fullscreenPrefix = 'moz';
-  } else if (Crafty.stage.elem.webkitRequestFullscreen) {
-    fullscreenPrefix = 'webkit';
-  } else {
-    fullscreenPrefix = '';
-  }
-
-  window.addEventListener(fullscreenPrefix+'fullscreenchange', function(){
-    window.setTimeout(function(){
-      height = Crafty.stage.elem.clientHeight;
-      width = Crafty.stage.elem.clientWidth;
-    }, 100);
   });
 });
 
@@ -91,14 +71,14 @@ Crafty.scene('Game', function(){
 
   Crafty.e('Stage, Color')
     .attr({
-      w: width
+      w: 800
     })
     .color('red');
 
   Crafty.e('2D, Canvas, Jump, Gravity, Color')
     .attr({
       x: 50,
-      y: height - 150,
+      y: 250,
       w: 50,
       h: 50
     })
@@ -107,8 +87,8 @@ Crafty.scene('Game', function(){
     .gravity('Stage')
     .color('blue')
     .bind('EnterFrame', function(){
-      if(this.y > height - 150) this.disableControls = true;
-      if(this.y > height) Crafty.scene('End');
+      if(this.y > 250) this.disableControls = true;
+      if(this.y > 400) Crafty.scene('End');
     });
 
   Crafty.e('2D, Canvas, Text')
@@ -146,19 +126,19 @@ Crafty.c('Stage', {
 
     this.attr({
       x: 0,
-      y: height - 100,
+      y: 300,
       w: Crafty.math.randomInt(1000, 500),
       h: 100
     })
     .bind('EnterFrame', function(){
       this.x -= 20 + 5 * calcLevel(timeElapsed());
 
-      if(this.x + this.w <= width && !this._nextStageLoaded){
+      if(this.x + this.w <= 900 && !this._nextStageLoaded){
         this._nextStageLoaded = true;
 
         Crafty.e('Stage, Collision, Color')
           .attr({
-            x: width  + Crafty.math.randomInt(500, 100)
+            x: 900  + Crafty.math.randomInt(500, 100)
           })
           .color('red');
 
@@ -194,7 +174,7 @@ Crafty.c('Jump', {
       this.disableControls = false;
       // '~~' converts from floating point to integer, to fix issue #11
       // https://github.com/LeoMcA/jumpy/issues/11
-      if(~~this.y > height - 145){
+      if(~~this.y > 255){
         Crafty.scene('End');
       }
     })
