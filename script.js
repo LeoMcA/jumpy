@@ -48,13 +48,14 @@ window.addEventListener('load', function(){
 \*---------------------------------------------*/
 
 Crafty.bind('goFullscreen', function(){
-  if (Crafty.stage.elem.requestFullscreen) {
-    Crafty.stage.elem.requestFullscreen();
-  } else if (Crafty.stage.elem.msRequestFullscreen) {
-    Crafty.stage.elem.msRequestFullscreen();
-  } else if (Crafty.stage.elem.mozRequestFullScreen) {
-    Crafty.stage.elem.mozRequestFullScreen();
-  } else if (Crafty.stage.elem.webkitRequestFullscreen) {
+  var wrapper = document.getElementById('cr-wrapper');
+  if (wrapper.requestFullscreen) {
+    wrapper.requestFullscreen();
+  } else if (wrapper.msRequestFullscreen) {
+    wrapper.msRequestFullscreen();
+  } else if (wrapper.mozRequestFullScreen) {
+    wrapper.mozRequestFullScreen();
+  } else if (wrapper.webkitRequestFullscreen) {
     Crafty.stage.elem.webkitRequestFullscreen();
   }
 });
